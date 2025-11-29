@@ -1,13 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <title>Para vos 💙</title>
 <style>
-
-    /* Este archivo representa el Tag0*/
-
     body {
         margin: 0;
         height: 100vh;
@@ -20,116 +16,125 @@
         font-family: 'Segoe UI', sans-serif;
         color: white;
         text-align: center;
+        padding: 20px;
     }
 
-    /* Corazones flotando */
-    .heart {
-        position: absolute;
-        bottom: -20px;
-        opacity: 0.7;
-        animation: floatUp 6s infinite ease-in;
-        font-size: 24px;
-    }
-
-    @keyframes floatUp {
-        0% { transform: translateY(0) scale(0.7); opacity: 0.7; }
-        100% { transform: translateY(-120vh) scale(1); opacity: 0; }
-    }
-
-    /* Mensaje */
-    h1 {
-        font-size: 45px;
-        animation: fadeIn 2s ease-out forwards;
-        opacity: 0;
-    }
-
-    p {
-        font-size: 30px;
-        width: 80%;
+    #container {
+        position: relative;
+        width: 90%;
         max-width: 400px;
-        animation: fadeIn 3s ease-out forwards;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .text-block {
+        position: absolute;
+        width: 100%;
         opacity: 0;
-    }
-
-    @keyframes fadeIn {
-        to { opacity: 1; }
-    }
-
-    /* Botón */
-    .btn {
-        margin-top: 20px;
-        padding: 12px 24px;
-        background: rgba(255,255,255,0.2);
-        border: 2px solid white;
-        border-radius: 12px;
-        color: white;
-        font-size: 25px;
-        cursor: pointer;
-        backdrop-filter: blur(3px);
-        transition: 0.3s;
-        animation: fadeIn 4s forwards;
-        opacity: 0;
-    }
-
-    .btn:hover {
-        background: rgba(255,255,255,0.35);
-        transform: scale(1.05);
-    }
-
-    /* Caja de pista */
-    #pista {
-        margin-top: 25px;
-        padding: 15px 20px;
-        background: rgba(255,255,255,0.25);
-        backdrop-filter: blur(4px);
-        border-radius: 12px;
-        width: 80%;
-        max-width: 380px;
-        font-size: 30px;
+        transform: translateY(40px);
+        transition: all 0.6s ease;
+        font-size: 20px;
         line-height: 1.4;
-        opacity: 0;
-        transform: scale(0.9);
-        transition: 0.4s ease;
-        display: none;
     }
 
+    .text-block.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .text-block.exit-up {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+
+    .text-block.exit-down {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    .controls {
+        margin-top: 20px;
+        display: flex;
+        gap: 15px;
+    }
+
+    button {
+        background: rgba(255,255,255,0.3);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        transition: 0.3s;
+    }
+
+    button:active {
+        transform: scale(0.95);
+    }
+
+    button:disabled {
+        opacity: 0.4;
+    }
 </style>
 </head>
 <body>
 
-<h1>Hola mi amor, feliz mesiversario!💙</h1>
-<p>Lista para una búsqueda del tesoro? Espero te guste. Esta es tu primera pista… gracias por ser parte de mi vida. Empezamos?</p>
+<div id="container">
+    <div class="text-block active">Hola mi amor... 💙</div>
+    <div class="text-block">Antes de empezar esta búsqueda del tesoro...</div>
+    <div class="text-block">Quería decirte que cada día con vos es un regalo.</div>
+    <div class="text-block">Y que hoy preparé algo especial para vos...</div>
+    <div class="text-block">Hecho con cariño, con ganas, y con vos en mi corazón. 💗</div>
+</div>
 
-<button class="btn" onclick="mostrarPista()">Mostrar pista ✨</button>
-
-<div id="pista">
-    🍽️ <b>Pista 1:</b><br><br>
-    “Soy de chapa y caliento fuerte, sin dar respiro,
-     y allí se hace el morfi que tanto te inspiro.
-      Estoy baqueteada, mi puerta es un drama total,
-       así que poneme un cartón, o no cierro jamás.”
+<div class="controls">
+    <button id="prevBtn" disabled>Atrás</button>
+    <button id="nextBtn">Siguiente</button>
 </div>
 
 <script>
-    // Genera corazones flotando
-    for(let i=0; i<20; i++){
-        let heart = document.createElement("div");
-        heart.innerHTML = "💗";
-        heart.classList.add("heart");
-        heart.style.left = Math.random()*100 + "vw";
-        heart.style.animationDelay = Math.random()*6 + "s";
-        document.body.appendChild(heart);
-    }
+let index = 0;
+const blocks = document.querySelectorAll(".text-block");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
 
-    // Función para revelar pista
-    function mostrarPista(){
-        const box = document.getElementById("pista");
-        box.style.display = "block";
-        setTimeout(() => {
-            box.style.opacity = "1";
-            box.style.transform = "scale(1)";
-        }, 50);
+function updateButtons() {
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === blocks.length - 1;
+}
+
+function showBlock(newIndex, direction) {
+    const current = blocks[index];
+    const next = blocks[newIndex];
+
+    // animación de salida
+    current.classList.remove("active");
+    current.classList.add(direction === "next" ? "exit-up" : "exit-down");
+
+    // reiniciar clase de entrada del siguiente
+    next.classList.remove("exit-up", "exit-down");
+    
+    setTimeout(() => {
+        current.classList.remove("exit-up", "exit-down");
+        index = newIndex;
+        next.classList.add("active");
+        updateButtons();
+    }, 600);
+}
+
+nextBtn.addEventListener("click", () => {
+    if (index < blocks.length - 1) {
+        showBlock(index + 1, "next");
     }
+});
+
+prevBtn.addEventListener("click", () => {
+    if (index > 0) {
+        showBlock(index - 1, "prev");
+    }
+});
 </script>
 
 </body>
