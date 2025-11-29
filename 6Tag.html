@@ -93,37 +93,39 @@
 </head>
 <body>
 
-<h1>Lo lograste, mi amor 💙</h1>
-<p>Solo quedaba un lugar por descubrir… mi corazón, que ya es tuyo desde hace tiempo.</p>
+<h1>Cuarta pista encontrada! 💙</h1>
+<p>Dale que ya casi terminamos amooor Tatitaa!</p>
 
-<button id="revealBtn">Tocá acá, mi vida</button>
+<button class="btn" onclick="mostrarPista()">Mostrar pista ✨</button>
 
-<div id="finalMessage">
-    Cada pista te trajo hasta acá…  
-    y lo que quería que encontraras no era un objeto…  
-    sino mi manera de decirte cuánto te amo. 💗
-    <br><br>
-    Gracias por ser mi hogar, mi paz y mi mejor lugar.  
-    <br><br>
-    Feliz mesiversario, mi amor, mi Tatita 💗
+<div id="pista">
+    💧 <b>Pista 5:</b><br><br>
+    “Soy el lugar al que vas a parar,
+     si después de un día querés descansar.
+      Estoy siempre lista, mullida y tendida,
+       y soy tu mejor amiga para hacer la dormida”
 </div>
 
 <script>
-    // corazones flotando
-    for(let i = 0; i < 25; i++){
+    // Genera corazones flotando
+    for(let i=0; i<20; i++){
         let heart = document.createElement("div");
         heart.innerHTML = "💗";
         heart.classList.add("heart");
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDelay = Math.random() * 7 + "s";
+        heart.style.left = Math.random()*100 + "vw";
+        heart.style.animationDelay = Math.random()*6 + "s";
         document.body.appendChild(heart);
     }
 
-    // revelar mensaje
-    document.getElementById("revealBtn").onclick = () => {
-        document.getElementById("finalMessage").style.display = "block";
-        document.getElementById("revealBtn").style.display = "none";
-    };
+    // Función para revelar pista
+    function mostrarPista(){
+        const box = document.getElementById("pista");
+        box.style.display = "block";
+        setTimeout(() => {
+            box.style.opacity = "1";
+            box.style.transform = "scale(1)";
+        }, 50);
+    }
 </script>
 
 </body>
