@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Secreto 💙</title>
+<style>
+  :root{
+    --bg1: #ff99b8;
+    --bg2: #8ac6ff;
+    --glass: rgba(255,255,255,0.22);
+    --white-85: rgba(255,255,255,0.95);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial;
+    background: linear-gradient(135deg,var(--bg1),var(--bg2));
+    color: white;
+    text-align:center;
+    overflow:hidden;
+  }
+
+  /* corazones */
+  .heart {
+    position:absolute;
+    bottom:-40px;
+    font-size:24px;
+    opacity:0.8;
+    animation:floatUp 7s infinite ease-in-out;
+    user-select:none;
+    pointer-events:none;
+  }
+  @keyframes floatUp{
+    0%{transform:translateY(0) scale(.85);opacity:.9}
+    100%{transform:translateY(-140vh) scale(1.15);opacity:0}
+  }
+
+  .card{
+    width:100%;
+    max-width:520px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    border-radius:16px;
+    padding:26px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    backdrop-filter: blur(6px);
+    position:relative;
+  }
+
+  h1{margin:6px 0 10px;font-size:28px}
+  p.lead{margin:0 0 18px;font-size:16px;opacity:.95}
+
+  .input-row{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:12px;
+  }
+
+  input[type="password"]{
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,0.12);
+    padding:12px 14px;
+    border-radius:10px;
+    color:var(--white-85);
+    font-size:18px;
+    outline:none;
+    width:100%;
+    max-width:320px;
+    transition:0.18s;
+  }
+  input[type="password"]:focus{transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.25)}
+
+  button.primary{
+    background: rgba(255,255,255,0.25);
+    border:2px solid rgba(255,255,255,0.9);
+    color:white;
+    padding:10px 16px;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:16px;
+    transition:0.18s;
+  }
+  button.primary:hover{transform:scale(1.03)}
+
+  .hint{font-size:13px;opacity:.85;margin-top:6px}
+
+  /* mensaje escondido */
+  #secretBox{
+    margin-top:18px;
+    background: rgba(255,255,255,0.12);
+    padding:16px;
+    border-radius:12px;
+    display:none;
+    color:white;
+    font-size:18px;
+    line-height:1.45;
+    transform:translateY(18px);
+    opacity:0;
+    transition: all .45s ease;
+  }
+  #secretBox.show{
+    display:block;
+    transform:translateY(0);
+    opacity:1;
+  }
+
+  /* bad password */
+  .error{
+    color:#ffdede;
+    background:rgba(255,0,0,0.08);
+    padding:8px 12px;
+    border-radius:8px;
+    margin-top:8px;
+    display:inline-block;
+    font-size:14px;
+  }
+
+  /* responsive */
+  @media (max-width:420px){
+    h1{font-size:24px}
+    input[type="password"]{font-size:16px;padding:10px}
+  }
+</style>
+</head>
+<body>
+
+  <!-- corazones dinámicos (se generan por JS) -->
+  <div class="card" role="main" aria-labelledby="t"> 
+    <h1 id="t">Un pequeño secreto 💙</h1>
+    <p class="lead">Para ver lo que sigue necesitás la palabra que sólo vos y yo sabemos. Ingresala abajo.</p>
+
+    <div class="input-row">
+      <input id="pw" type="password" inputmode="text" autocomplete="off" placeholder="Escribí la contraseña..." aria-label="Contraseña"/>
+      <button id="ok" class="primary">Ver</button>
+    </div>
+
+    <div id="feedback" aria-live="polite"></div>
+
+    <div id="secretBox" aria-hidden="true">
+      <!-- Texto final: personalizalo en JS -->
+      <div id="secretText"></div>
+    </div>
+
+    <p class="hint">Si la contraseña falla, intentá recordar nuestro apodo o la fecha secreta 😉</p>
+  </div>
+
+<script>
+  //Contraseña y mensaje final
+  const PASSWORD = "12oc25";
+  const FINAL_TEXT = `
+    Llegaste hasta acá y eso ya dice mucho.  
+    No hay mejor premio que verte sonreír.  
+    Gracias por cada día, por cada risa, por aguantar mis planes locos.  
+    Te amo más de lo que las palabras alcanzan. 💙  
+    — Fede
+  `;
+  // -------------------------
+
+  // generar corazones
+  for(let i=0;i<18;i++){
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = (Math.random() > 0.5) ? "💗" : "💞";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.fontSize = (16 + Math.random()*24) + "px";
+    h.style.animationDelay = (Math.random()*6) + "s";
+    document.body.appendChild(h);
+  }
+
+  // elementos
+  const inpw = document.getElementById("pw");
+  const ok = document.getElementById("ok");
+  const box = document.getElementById("secretBox");
+  const secretText = document.getElementById("secretText");
+  const feedback = document.getElementById("feedback");
+
+  function showSecret(){
+    secretText.innerHTML = FINAL_TEXT.replace(/\n/g, "<br>");
+    box.classList.add("show");
+    box.setAttribute("aria-hidden","false");
+    feedback.innerHTML = "";
+  }
+
+  function bad(msg){
+    feedback.innerHTML = '<div class="error">'+msg+'</div>';
+    setTimeout(()=> feedback.innerHTML = "", 2200);
+  }
+
+  ok.addEventListener("click", ()=>{
+    const val = String(inpw.value || "").trim().toLowerCase();
+    if(!val){ bad("Escribí la contraseña, capo."); return; }
+    if(val === PASSWORD.toLowerCase()){
+      showSecret();
+    } else {
+      bad("Contraseña incorrecta. Probá otra vez.");
+      inpw.value = "";
+      inpw.focus();
+    }
+  });
+
+  // Enter key
+  inpw.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter") ok.click();
+  });
+
+
+  if(sessionStorage.getItem("secretSeen") === "1"){
+    showSecret();
+  }
+  // cuando se revele, marcarlo:
+  const origShow = showSecret;
+  showSecret = function(){
+    origShow();
+    sessionStorage.setItem("secretSeen","1");
+  };
+</script>
+
+</body>
+</html>
