@@ -12,13 +12,12 @@ body {
     background: linear-gradient(135deg, #ff9eb3, #9ecbff);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     font-family: 'Segoe UI', sans-serif;
     color: white;
     text-align: center;
-    overflow: hidden;
     padding: 20px;
+    overflow-y: auto; /* 🔑 scroll habilitado */
 }
 
 h1 {
@@ -37,6 +36,7 @@ p {
     width: 260px;
     height: 260px;
     margin-bottom: 15px;
+    flex-shrink: 0;
 }
 
 #wheel {
@@ -55,7 +55,6 @@ p {
     );
     transition: transform 3s cubic-bezier(0.25, 1, 0.5, 1);
     position: relative;
-    z-index: 1;
 }
 
 .pointer {
@@ -89,11 +88,11 @@ button:active {
     min-height: 28px;
 }
 
-/* lista de opciones */
+/* lista */
 #optionsList {
     list-style: none;
     padding: 0;
-    margin-top: 15px;
+    margin: 20px 0 40px;
     font-size: 16px;
     width: 100%;
     max-width: 360px;
