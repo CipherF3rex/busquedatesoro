@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruleta 💙</title>
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ff9eb3, #9ecbff);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    max-width: 400px;
+}
+
+#wheel-container {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    margin-bottom: 15px;
+}
+
+#wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 6px solid rgba(255,255,255,0.9);
+    background: conic-gradient(
+        #ff6b9c 0deg 51deg,
+        #ffd166 51deg 102deg,
+        #06d6a0 102deg 153deg,
+        #4dabf7 153deg 204deg,
+        #9b5de5 204deg 255deg,
+        #f15bb5 255deg 306deg,
+        #ff924c 306deg 360deg
+    );
+    transition: transform 3s cubic-bezier(0.25, 1, 0.5, 1);
+    position: relative;
+    z-index: 1;
+}
+
+.pointer {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 30px;
+    z-index: 10;
+}
+
+button {
+    background: rgba(255,255,255,0.25);
+    border: 2px solid rgba(255,255,255,0.9);
+    color: white;
+    padding: 12px 22px;
+    font-size: 18px;
+    border-radius: 14px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    margin-top: 10px;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+#result {
+    margin-top: 12px;
+    font-size: 20px;
+    min-height: 28px;
+}
+
+/* lista de opciones */
+#optionsList {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 360px;
+}
+
+#optionsList li {
+    margin: 6px 0;
+    opacity: 0.5;
+    transition: 0.3s;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Ruleta del destino 💙</h1>
+<p>Girarla es fácil… aceptar lo que salga es la parte divertida 😏</p>
+
+<div id="wheel-container">
+    <div class="pointer">⬇️</div>
+    <div id="wheel"></div>
+</div>
+
+<button onclick="spin()">Girar</button>
+<div id="result"></div>
+
+<ul id="optionsList"></ul>
+
+<script>
+const options = [
+    "Un abrazo largo 🤍",
+    "Un beso sorpresa 💋",
+    "Elegís la peli/Serie 🎬",
+    "Merienda juntos 🧉",
+    "Foto sorpresa sin importar la situación 📸",
+    "Unos mimos",
+    "Cena a elección 🍽️"
+];
+
+const wheel = document.getElementById("wheel");
+const result = document.getElementById("result");
+const list = document.getElementById("optionsList");
+
+let currentRotation = 0;
+let spinning = false;
+
+/* cargar lista */
+options.forEach(opt => {
+    const li = document.createElement("li");
+    li.textContent = "• " + opt;
+    list.appendChild(li);
+});
+
+function spin() {
+    if (spinning) return;
+    spinning = true;
+
+    const randomSpin = Math.floor(Math.random() * 360) + 720;
+    currentRotation += randomSpin;
+
+    wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+    const normalized = (360 - (currentRotation % 360)) % 360;
+    const slice = Math.floor(normalized / (360 / options.length));
+
+    setTimeout(() => {
+        result.textContent = "Resultado: " + options[slice];
+
+        [...list.children].forEach(li => {
+            li.style.opacity = "0.4";
+            li.style.fontWeight = "normal";
+        });
+
+        list.children[slice].style.opacity = "1";
+        list.children[slice].style.fontWeight = "bold";
+
+        spinning = false;
+    }, 3000);
+}
+</script>
+
+</body>
+</html>
