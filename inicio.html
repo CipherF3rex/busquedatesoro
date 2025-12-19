@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para vos 💙</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(135deg, #ff9eb3, #9ecbff);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        font-family: 'Segoe UI', sans-serif;
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+
+    #container {
+        position: relative;
+        width: 90%;
+        max-width: 800px;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .text-block {
+        position: absolute;
+        width: 100%;
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.6s ease;
+        font-size: 40px;
+        line-height: 1.4;
+    }
+
+    .text-block.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .text-block.exit-up {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+
+    .text-block.exit-down {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    .controls {
+        margin-top: 20px;
+        display: flex;
+        gap: 15px;
+    }
+
+    button {
+        background: rgba(255,255,255,0.3);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: white;
+        font-size: 35px;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        transition: 0.3s;
+    }
+
+    button:active {
+        transform: scale(0.95);
+    }
+
+    button:disabled {
+        opacity: 0.4;
+    }
+</style>
+</head>
+<body>
+
+<div id="container">
+    <div class="text-block active">Hola mi amor... 💙</div>
+    <div class="text-block">Antes de empezar voy a comentarte un poco lo que tengo preparado...</div>
+    <div class="text-block">No sin antes decirte que cada día con vos es un regalo. Me siento afortunado de tenerte en mi vida, te amo infinitamente</div>
+    <div class="text-block">Volviendo a la sorpresa, hoy preparé algo especial para vos... Una busqueda del tesoro</div>
+    <div class="text-block">Hecho con cariño, con ganas, y con vos en mi corazón. Mucha suerte mi Tatita 💗</div>
+</div>
+
+<div class="controls">
+    <button id="prevBtn" disabled>Atrás</button>
+    <button id="nextBtn">Siguiente</button>
+</div>
+
+<script>
+let index = 0;
+const blocks = document.querySelectorAll(".text-block");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+function updateButtons() {
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === blocks.length - 1;
+}
+
+function showBlock(newIndex, direction) {
+    const current = blocks[index];
+    const next = blocks[newIndex];
+
+    // animación de salida
+    current.classList.remove("active");
+    current.classList.add(direction === "next" ? "exit-up" : "exit-down");
+
+    // reiniciar clase de entrada del siguiente
+    next.classList.remove("exit-up", "exit-down");
+    
+    setTimeout(() => {
+        current.classList.remove("exit-up", "exit-down");
+        index = newIndex;
+        next.classList.add("active");
+        updateButtons();
+    }, 600);
+}
+
+nextBtn.addEventListener("click", () => {
+    if (index < blocks.length - 1) {
+        showBlock(index + 1, "next");
+    }
+});
+
+prevBtn.addEventListener("click", () => {
+    if (index > 0) {
+        showBlock(index - 1, "prev");
+    }
+});
+</script>
+
+</body>
+</html>
