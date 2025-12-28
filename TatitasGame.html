@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Con todo mi ser 💜</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(135deg, #ff9eb3, #9ecbff);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        font-family: 'Segoe UI', sans-serif;
+        color: white;
+        text-align: center;
+    }
+
+    /* Corazones flotando */
+    .heart {
+        position: absolute;
+        bottom: -20px;
+        opacity: 0.7;
+        animation: floatUp 6s infinite ease-in;
+        font-size: 24px;
+    }
+
+        /* Gamepads flotando */
+    .gamepad {
+        position: absolute;
+        bottom: -20px;
+        opacity: 0.7;
+        animation: floatUp 6s infinite ease-in;
+        font-size: 30px;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(0.7); opacity: 0.7; }
+        100% { transform: translateY(-120vh) scale(1); opacity: 0; }
+    }
+
+    /* Mensaje */
+    h1 {
+        font-size: 60px;
+        animation: fadeIn 2s ease-out forwards;
+        opacity: 0;
+    }
+
+    p {
+        font-size: 40px;
+        width: 80%;
+        max-width: 400px;
+        animation: fadeIn 3s ease-out forwards;
+        opacity: 0;
+    }
+
+    @keyframes fadeIn {
+        to { opacity: 1; }
+    }
+
+    /* Botón */
+    .btn {
+        margin-top: 20px;
+        padding: 12px 24px;
+        background: rgba(255,255,255,0.2);
+        border: 2px solid white;
+        border-radius: 12px;
+        color: white;
+        font-size: 35px;
+        cursor: pointer;
+        backdrop-filter: blur(3px);
+        transition: 0.3s;
+        animation: fadeIn 4s forwards;
+        opacity: 0;
+    }
+
+    .btn:hover {
+        background: rgba(255,255,255,0.35);
+        transform: scale(1.05);
+    }
+
+    /* Caja de pista */
+    #pista {
+        margin-top: 25px;
+        padding: 15px 20px;
+        background: rgba(255,255,255,0.25);
+        backdrop-filter: blur(4px);
+        border-radius: 12px;
+        width: 90%;            /* Aumento de ancho para aprovechar espacio */
+        max-width: 600px;      /* Un máximo más amplio para que el texto no se vaya pa bajo tanto */
+        font-size: 28px;       /* Tamaño de fuente más equilibrado */
+        line-height: 1.4;
+        opacity: 0;
+        transform: scale(0.9);
+        transition: 0.4s ease;
+        display: none;
+    }
+
+</style>
+</head>
+<body>
+
+<h1>Como regalo adicional, que todavia no está listo pero cuando leas esto si va a estar listo💙</h1>
+<p>Preparé "Una cosita" que tal vez dimensiones que es demasiado pero no importa, lo vales</p>
+
+<button class="btn" onclick="mostrarPista()">Mostrar regalo 🎮</button>
+
+<div id="pista">
+     <b>Espero te guste mi bonita</b><br><br>
+    “Un día de verano (Espero no sea muy lejano a cuando te dé esto)
+        dijiste que íbamos a tener que "huir a la oficina" por el calor
+            que estaba haciendo, también dijiste que "preferias ir comprando coquitas"
+                para no descomponerte. De ahí mismo saqué esta idea, UN JUEGO, un juego el cual
+                    trate de vos, como personaje principal tratando de no desmayarte llegando a una meta.
+                        Las mecánicas están descriptas en el juego que podes descargar <a href="https://drive.google.com/drive/u/0/folders/1374gGldDREK0fL_kstQiXs5yBGdZvjdS">acá</a> ”
+</div>
+
+<script>
+    // Genera corazones flotando
+    for(let i=0; i<20; i++){
+        let heart = document.createElement("div");
+        heart.innerHTML = "💗";
+        heart.classList.add("heart");
+        heart.style.left = Math.random()*100 + "vw";
+        heart.style.animationDelay = Math.random()*6 + "s";
+        document.body.appendChild(heart);
+    }
+    // Genera Gamepads flotando
+    for(let i=0; i<20; i++){
+        let gamepad = document.createElement("div");
+        gamepad.innerHTML = "🎮";
+        gamepad.classList.add("gamepad");
+        gamepad.style.left = Math.random()*100 + "vw";
+        gamepad.style.animationDelay = Math.random()*6 + "s";
+        document.body.appendChild(gamepad);
+    }
+
+    // Función para revelar pista
+    function mostrarPista(){
+        const box = document.getElementById("pista");
+        box.style.display = "block";
+        setTimeout(() => {
+            box.style.opacity = "1";
+            box.style.transform = "scale(1)";
+        }, 50);
+    }
+</script>
+
+</body>
+</html>
