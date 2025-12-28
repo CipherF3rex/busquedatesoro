@@ -21,6 +21,7 @@
         overflow-y: auto; /* Habilita el scroll */
     }
 
+
     h1 {
         font-size: 30px;
         margin-bottom: 10px;
@@ -96,7 +97,6 @@
 </head>
 
 <body>
-
 <h1>Elegí un recuerdo 💙</h1>
 <p>Este no es un final… es un lugar para volver cuando tengas ganas.</p>
 
@@ -109,8 +109,7 @@
     <a href="4Tag.html"><div class="btn">💛 Tag 4</div></a>
     <a href="5Tag.html"><div class="btn">💜 Tag 5</div></a>
     <a href="6Tag.html"><div class="btn">💝 Tag 6</div></a>
-    <a href="TatitasGame.html"><div class="btn">🎮Tatita´s Game🎮</div></a>
-    
+    <a href="TatitasGame.html" id="game-link" class="btn">Sorpresa (Bloqueado 🔒)</a>
 </div>
 
 <script>
@@ -122,8 +121,29 @@
         h.style.left = Math.random() * 100 + "vw";
         h.style.animationDelay = Math.random() * 6 + "s";
         document.body.appendChild(h);
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // CONFIGURACIÓN AÑO, Mes [0-11], Día
+        //Enero es 0, Febrero es 1 Diciembre es 11.
+        const fechaApertura = new Date(2026, 1, 14);
+        const hoy = new Date();
+        const link = document.getElementById("game-link");
+
+        if (hoy < fechaApertura) {
+            // Si aún no es el día, se bloquea el Link
+            link.style.opacity = "0.5";
+            link.style.cursor = "not-allowed";
+            link.style.pointerEvents = "none"; // Antiansiolitico (No se puede apretar)
+            link.innerText = "Tatita's game (Disponible el 14/02) 🔒";
+        } else {
+            // Si ya llegó el día, se habilita el link
+            link.style.opacity = "1";
+            link.style.cursor = "pointer";
+            link.style.pointerEvents = "auto";
+            link.innerText = "Tatita's game ✨";
+        }
+    });
     }
 </script>
-
 </body>
 </html>
